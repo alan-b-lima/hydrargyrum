@@ -97,7 +97,7 @@ func (a AuthorizedKey) MarshalText() ([]byte, error) {
 }
 
 // UnmarshalText splits the authorized key line into its fields and decodes
-// them properly. This function assumes the line has been trimmed of spaces.
+// them properly.
 //
 // The OpenSSH format, described in [ssh(8)] is as follows:
 //
@@ -121,6 +121,10 @@ func (a *AuthorizedKey) UnmarshalText(line []byte) error {
 	var i int
 	for i = 0; len(line) > 0; i++ {
 		if i > 4 {
+			if len(trimSpace(line)) == 0 {
+				break
+			}
+
 			return errors.New("too many fields")
 		}
 
